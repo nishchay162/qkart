@@ -7,8 +7,13 @@ import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
+import { useHistory, Link } from "react-router-dom";
+
+
+
 
 const Register = () => {
+  const history=useHistory()
   const { enqueueSnackbar } = useSnackbar();
   const[formData,setFormData]=useState({
     username:"",
@@ -17,6 +22,7 @@ const Register = () => {
 
   })
   const [loading,setLoading]=useState(false);
+  
   function handleFormChange(e){
     setFormData({
       ...formData,
@@ -60,6 +66,7 @@ const Register = () => {
     enqueueSnackbar("Registered Successfully",{
     variant:"success"
     })
+    history.push('/login')
   }
     }catch(e){
       if(e.response.status===400){
@@ -176,21 +183,27 @@ const Register = () => {
             value={formData.confirmPassword}
             onChange={handleFormChange}
           />
-          <Stack justifyContent="center"alignItems="center">
-          <CircularProgress />
-          </Stack>
-         
-           <Button className="button" variant="contained" 
-           onClick={()=>{
-            register(formData)
-           }}>
-            Register Now
-           </Button>
+        {loading ? (
+  <Stack justifyContent="center" alignItems="center">
+    <CircularProgress />
+  </Stack>
+) : (
+  <Button
+    className="button"
+    variant="contained"
+    onClick={() => {
+      register(formData);
+    }}
+  >
+  register to Qkart
+  </Button>
+)}
+
           <p className="secondary-action">
             Already have an account?{" "}
-             <a className="link" href="#">
+            <Link to="/login" className="link">
               Login here
-             </a>
+            </Link>
           </p>
         </Stack>
       </Box>
